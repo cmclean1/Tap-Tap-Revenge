@@ -5,7 +5,6 @@ import ddf.minim.analysis.*;
 import ddf.minim.ugens.*;
 import ddf.minim.effects.*;
 
-
 Catch[] c = new Catch[4];
 Song song;
 Minim minim;
@@ -38,7 +37,6 @@ void setup()
   for (int i = 0; i < song.d.length; i++)
   {
     song.d[i].beatTime = songTime+((song.d[i].dropTime-1)*song.SPB)-song.d[i].travelTime;
-    println(song.d[i].travelTime);
   }
   for (int i = 0; i < c.length; i++)
   {
@@ -61,7 +59,6 @@ void draw()
   }
   background(255);
   fill(0);
-  text(millis(), width/2, height/2);
   for (int i = 0; i < song.d.length; i++)
   {
     song.d[i].display();
@@ -71,10 +68,21 @@ void draw()
   {
     c[i].display();
     c[i].ifPressed();
+    //  c[i].checkDrop(song.d);
   }
 }
-void keyPressed()
-{
-
-}
+//void keyPressed()
+//{
+//  for (int i = 0; i < c.length; i++)
+//  {
+//    c[i].ifPressed();
+//  }
+//}
+//void keyReleased()
+//{
+//    for (int i = 0; i < c.length; i++)
+//  {
+//    c[i].ifPressed();
+//  }
+//}
 
