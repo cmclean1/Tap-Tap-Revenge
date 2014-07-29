@@ -3,6 +3,7 @@ class Catch
   int type;
   color c = color(0);
   PVector loc;
+  boolean justPressed = false;
   Catch(int _type)
   {
     type = _type;
@@ -31,27 +32,19 @@ class Catch
   void ifPressed()
   {
     checkMissed(song.d);
-    if (keyPressed)
+    if (keys[type-1])
     {
-      if (type == 1 && keyCode == LEFT || type == 2 && keyCode == DOWN || type == 3 && keyCode == UP || type == 4 && keyCode == RIGHT)
-      {
-        checkDrop(song.d);
-        keyPressed = !keyPressed;
-      }
-    } else
-    {
-      // c = color(0);
+      checkDrop(song.d);
     }
   }
   void checkMissed(Drop[] d)
   {
     for (int i = 0; i < d.length; i++)
     {
-       if (d[i].loc.y > 500 && d[i].loc.y < 600 && type == d[i].type)
+      if (d[i].loc.y > 500 && d[i].loc.y < 600 && type == d[i].type && !d[i].longBeat)
       {
         d[i].loc.y = 1000;
         c = color(255, 0, 0);
-        println("LOL");
         return;
       }
     }
@@ -60,39 +53,97 @@ class Catch
   {
     for (int i = 0; i < d.length; i++)
     {
-      if (loc.y > d[i].loc.y - 5 && loc.y < d[i].loc.y + 5) {
-        if (type == d[i].type)
+      if (loc.y > d[i].loc.y - 5 && loc.y < d[i].loc.y + 5 && loc.x == d[i].loc.x) {
+        if (d[i].longBeat)
         {
-          d[i].loc.y = 1000;
-          c = color(0, 0, 255);
-          return;
+          c = color(0, 0, 244);
+          d[i].beatLength-=d[i].dropSpeed;            
+          d[i].loc.y-=d[i].dropSpeed;
+          if (d[i].beatLength <=0)
+          {
+            d[i].longBeat = false;
+          }
+        } else
+        {
+          if (!justPressed)
+          {
+            d[i].loc.y = 1000;
+            justPressed = true;
+            c = color(0, 0, 255);
+          }
         }
-      } else if (loc.y > d[i].loc.y - 10 && loc.y < d[i].loc.y + 10) {
-        if (type == d[i].type)
+        return;
+      } else if (loc.y > d[i].loc.y - 10 && loc.y < d[i].loc.y + 10 && loc.x == d[i].loc.x) {      
+        if (d[i].longBeat)
         {
-          d[i].loc.y = 1000;
           c = color(0, 255, 0);
-          return;
-        }
-      } else if (loc.y > d[i].loc.y - 15 && loc.y < d[i].loc.y + 15)
-      {
-        if (type == d[i].type)
+          d[i].beatLength-=d[i].dropSpeed;
+          d[i].loc.y-=d[i].dropSpeed;
+          if (d[i].beatLength <=0)
+          {
+            d[i].longBeat = false;
+          }
+        } else
         {
-          d[i].loc.y = 1000;
+          if (!justPressed)
+
+          {
+            c = color(0, 255, 0);
+            d[i].loc.y = 1000;
+            justPressed = true;
+          }
+        }
+        return;
+      } else if (loc.y > d[i].loc.y - 15 && loc.y < d[i].loc.y + 15 && loc.x == d[i].loc.x)
+      {
+        if (d[i].longBeat)
+        {
           c = color(255, 255, 0);
-          return;
-        }
-      } else if (loc.y > d[i].loc.y - 20 && loc.y < d[i].loc.y + 20)
-      {
-        if (type == d[i].type)
+          d[i].beatLength-=d[i].dropSpeed;            
+          d[i].loc.y-=d[i].dropSpeed;
+          if (d[i].beatLength <=0)
+          {
+            d[i].longBeat = false;
+          }
+        } else
         {
-          d[i].loc.y = 1000;
-          c = color(255, 165, 0);
-          return;
+          if (!justPressed)
+
+          {
+            c = color(255, 255, 0);
+            d[i].loc.y = 1000;
+            justPressed = true;
+          }
         }
+        return;
+      } else if (loc.y > d[i].loc.y - 20 && loc.y < d[i].loc.y + 20 && loc.x == d[i].loc.x)
+      {       
+        if (d[i].longBeat)
+        {
+          c = color(255, 165, 0);
+          d[i].beatLength-=d[i].dropSpeed;            
+          d[i].loc.y-=d[i].dropSpeed;
+          if (d[i].beatLength <=0)
+          {
+            d[i].longBeat = false;
+          }
+        } else
+        {
+          if (!justPressed)
+
+          {
+            d[i].loc.y = 1000;
+            justPressed = true;
+            c = color(255, 165, 0);
+          }
+        }
+        return;
       } else
       {
-        c = color(255, 0, 0);
+        if (!justPressed)
+        {
+          c = color(255, 0, 0);
+        }
       }
     }
   }

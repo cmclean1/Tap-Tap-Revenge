@@ -14,6 +14,7 @@ float songTime;
 boolean beat = true;
 float beatTime;
 float BPS;
+boolean[] keys = new boolean[4];
 boolean songStart = false;
 float startTime = 4000;
 void setup()
@@ -28,10 +29,14 @@ void setup()
   }
   song = new Song(float(ss[0][0]), float(ss[0][1]), "Welcome To Me.mp3");
   song.d = new Drop[s.length-1];
+
   for (int i = 0; i < song.d.length; i++)
   {
-    song.d[i] = new Drop(int(ss[i+1][0]), float(ss[i+1][1]));
+    song.d[i] = new Drop(int(ss[i+1][0]), float(ss[i+1][1]), float(ss[i+1][2]));
+    //song.d[i] = new Drop(int(ss[i+1][0]), float(ss[i+1][1]), 2);
   }
+  println((5*60)*(song.SPB)/1000);
+
   songTime = startTime+(song.start*1000);
   beatTime = songTime;
   for (int i = 0; i < song.d.length; i++)
@@ -47,6 +52,7 @@ void setup()
 void draw()
 {
   frameRate(60);
+  println(c[0].justPressed);
   if (millis() >= startTime && songStart == false)
   {
     song.player.play();
@@ -71,18 +77,49 @@ void draw()
     //  c[i].checkDrop(song.d);
   }
 }
-//void keyPressed()
-//{
-//  for (int i = 0; i < c.length; i++)
-//  {
-//    c[i].ifPressed();
-//  }
-//}
-//void keyReleased()
-//{
-//    for (int i = 0; i < c.length; i++)
-//  {
-//    c[i].ifPressed();
-//  }
-//}
+void keyPressed()
+{
+  if (keyCode == LEFT)
+  {
+    keys[0] = true;
+  }
+  if (keyCode == DOWN)
+  {
+    keys[1] = true;
+  }
+  if (keyCode == UP)
+  {
+    keys[2] = true;
+  }
+  if (keyCode == RIGHT)
+  {
+    keys[3] = true;
+  }
+}
+void keyReleased()
+{
+  if (keyCode == LEFT)
+  {
+    keys[0] = false;
+    c[0].justPressed = false;
+  }
+  if (keyCode == DOWN)
+  {
+    keys[1] = false;
+    c[1].justPressed = false;
+
+  }
+  if (keyCode == UP)
+  {
+    keys[2] = false;
+    c[2].justPressed = false;
+
+  }
+  if (keyCode == RIGHT)
+  {
+    keys[3] = false;
+    c[3].justPressed = false;
+
+  }
+}
 
