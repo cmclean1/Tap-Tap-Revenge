@@ -124,11 +124,11 @@ void draw()
       songs[whichSong].beatTime+=songs[whichSong].SPB;
     }
     fill(0);
-    //    for (int i = 0; i < song.d.length; i++)
-    //    {
-    //      songs[whichSong].d[i].display();
-    //      songs[whichSong].d[i].move();
-    //    }
+    for (int i = 0; i < songs[whichSong].d.length; i++)
+    {
+      songs[whichSong].d[i].display();
+      songs[whichSong].d[i].move();
+    }
     for (int i = 0; i < c.length; i++)
     {
       c[i].display();
@@ -149,6 +149,10 @@ void keyPressed()
     if (key == ' ')
     {
       location = 3;
+      startTime = millis() + 3000;
+      songs[whichSong].initializeDrops();
+      songs[whichSong].player.rewind();
+      songs[whichSong].player.pause();
     } else if (keyCode == RIGHT)
     {
       whichSong++;
