@@ -31,10 +31,10 @@ class Catch
   }
   void ifPressed()
   {
-    checkMissed(song.d);
+    checkMissed(songs[whichSong].d);
     if (keys[type-1])
     {
-      checkDrop(song.d);
+      checkDrop(songs[whichSong].d);
     }
   }
   void checkMissed(Drop[] d)
