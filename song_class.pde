@@ -41,6 +41,12 @@ class Song
       text(meta.author(), width/2, 440);
       imageMode(CENTER);
       image(coverArt, width/2, 200, 300, 300);
+      player.play();
+    }
+    else
+    {
+      player.rewind();
+      player.pause();
     }
   }
   void initializeDrops()
