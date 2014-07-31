@@ -4,30 +4,38 @@ class Catch
   color c = color(0);
   PVector loc;
   boolean justPressed = false;
+  String typeString;
   Catch(int _type)
   {
     type = _type;
     if (type == 1)
     {
       loc = new PVector(50, 450);
+      typeString = "←";
     }
     if (type == 2)
     {
       loc = new PVector(100, 450);
+      typeString = "↓";
     }
     if (type == 3)
     {
       loc = new PVector(150, 450);
+      typeString = "↑";
     }
     if (type == 4)
     {
       loc = new PVector(200, 450);
+      typeString = "→";
     }
   }
   void display()
   {
     fill(c);
     ellipse(loc.x, loc.y, 20, 20);
+    fill(0);
+    textSize(20);
+    text(typeString, loc.x, 480);
   }
   void ifPressed()
   {

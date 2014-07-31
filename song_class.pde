@@ -19,7 +19,7 @@ class Song
     which = _whichSong;
     player = minim.loadFile(name);
     meta = player.getMetaData();
-    loadString = loadStrings("Welcome To Me.txt");
+    loadString = loadStrings(meta.title() + ".txt");
     data = new String[loadString.length][3];
     for (int i = 0; i < data.length; i++)
     {
