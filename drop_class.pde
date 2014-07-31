@@ -20,7 +20,7 @@ class Drop
     {
       longBeat = true;
     }
-    beatLength = (dropSpeed*60)*song.SPB/1000*dropLength;
+    beatLength = (dropSpeed*60)*songs[whichSong].SPB/1000*dropLength;
     //beatTime = songTime+((dropTime-1)*song.SPB);
     if (type == 1)
     {
