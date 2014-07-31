@@ -134,6 +134,13 @@ void draw()
       c[i].display();
       c[i].ifPressed();
     }
+    if (songs[whichSong].player.isPlaying() == false && songStart)
+    {
+      songs[whichSong].player.rewind();
+      songs[whichSong].player.pause();
+      songStart = false;
+      location = 2;
+    }
   }
 }
 void keyPressed()
