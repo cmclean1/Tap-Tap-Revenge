@@ -24,10 +24,20 @@ float BPS;
 int whichSong = 0;
 boolean[] keys = new boolean[4];
 boolean songStart = false;
+float[] gameStats = new float[4];
+/*
+0 = missed drops
+ 1 = caught drops
+ 2 = current streak
+ 3 = top streak
+ */
 int location = 0;
 /*
 0 = logo
- 1 = main menu
+ 1 = intro
+ 2 = song select
+ 3 = game
+ 4 = stats after game
  */
 float startTime = 4000;
 String[] filenames;
@@ -63,84 +73,30 @@ void setup()
   //  {
   //    song.d[i].beatTime = songTime+((song.d[i].dropTime-1)*song.SPB)-song.d[i].travelTime;
   //  }
-  for (int i = 0; i < c.length; i++)
-  {
-    c[i] = new Catch(i+1);
-  }
+
   noStroke();
 }
-void Logo()
-{
-  if (millis() < 5000)
-  {
-    gunPlayer.play();
-    imageMode(CENTER);
-    image(loadImage("logo.png"), width/2, height/2);
-  } else
-  {
-    location = 1;
-  }
-}
+
 void draw()
 {
   frameRate(60);
   background(255);
-  if (location == 0)
+  Logo();
+  intro();
+  songSelect();
+  game();
+  if (location == 4)
   {
-    Logo();
-  }
-  if (location == 1)
-  {
-    textSize(40);
-    fill(0);
-    textAlign(CENTER);
-    text("Revenge of Tap Tap Revenge \nthe Sequel to the Prequel to the Remake", width/2, 50);
     textSize(20);
-    text("Press SPACE to START", width/2, 400);
-  }
-  if (location == 2)
-  {
-    for (int i = 0; i < songs.length; i++)
-    {
-      songs[i].displayMenu();
-    }
-    textSize(20);
-    text("CHOOSE A SONG", width/2, 35);
+    text("Great Job!", width/2, 50);
+    text("Press SPACE to return to song selection", width/2, 450);
     textSize(15);
-    text("SELECT WITH SPACE", width/2, 485);
-    textSize(50);
-    text("<-", 50, 400);
-    text("->", 750, 400);
-  }
-  if (location == 3)
-  {
-    if (millis() >= startTime && songStart == false)
-    {
-      songs[whichSong].player.play();
-      songStart = true;
-    }
-    if (millis() > beatTime && songStart)
-    {
-      songs[whichSong].beatTime+=songs[whichSong].SPB;
-    }
-    fill(0);
-    for (int i = 0; i < songs[whichSong].d.length; i++)
-    {
-      songs[whichSong].d[i].display();
-      songs[whichSong].d[i].move();
-    }
-    for (int i = 0; i < c.length; i++)
-    {
-      c[i].display();
-      c[i].ifPressed();
-    }
-    if (songs[whichSong].player.isPlaying() == false && songStart)
-    {
-      songs[whichSong].player.rewind();
-      songs[whichSong].player.pause();
-      songStart = false;
-      location = 2;
-    }
+    textAlign(LEFT);
+    text("Drops Caught: " + int(gameStats[1]), 50, 100);
+    text("Drops Missed: " + int(gameStats[0]), 50, 150);
+    text("Accuracy: " + round(gameStats[1]/(gameStats[0]+gameStats[1])*100) + "%", 50, 200);
+    text("Longext Streak: " + int(gameStats[3]), 50, 250);
+    textAlign(CENTER);
   }
 }
 void keyPressed()
@@ -156,6 +112,10 @@ void keyPressed()
     if (key == ' ')
     {
       location = 3;
+      for (int i = 0; i < c.length; i++)
+      {
+        c[i] = new Catch(i+1);
+      }
       startTime = millis() + 3000;
       songs[whichSong].initializeDrops();
       songs[whichSong].player.rewind();
@@ -192,6 +152,13 @@ void keyPressed()
     if (keyCode == RIGHT)
     {
       keys[3] = true;
+    }
+  } else if (location == 4)
+  {
+    if (key == ' ')
+    {
+      location = 2;
+      gameStats = new float[4];
     }
   }
 }
