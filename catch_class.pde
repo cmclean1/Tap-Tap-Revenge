@@ -53,6 +53,8 @@ class Catch
       {
         d[i].loc.y = 1000;
         c = color(255, 0, 0);
+        gameStats[0]++;
+        gameStats[2] = 0;
         return;
       }
     }
@@ -76,6 +78,12 @@ class Catch
           if (!justPressed)
           {
             d[i].loc.y = 1000;
+            gameStats[1]++;
+            gameStats[2]++;
+            if (gameStats[2] > gameStats[3])
+            {
+              gameStats[3]++;
+            }
             justPressed = true;
             c = color(0, 0, 255);
           }
@@ -95,7 +103,13 @@ class Catch
         {
           if (!justPressed)
 
-          {
+          {            
+            gameStats[1]++;
+            gameStats[2]++;
+            if (gameStats[2] > gameStats[3])
+            {
+              gameStats[3]++;
+            }
             c = color(0, 255, 0);
             d[i].loc.y = 1000;
             justPressed = true;
@@ -117,7 +131,13 @@ class Catch
         {
           if (!justPressed)
 
-          {
+          {            
+            gameStats[1]++;
+            gameStats[2]++;
+            if (gameStats[2] > gameStats[3])
+            {
+              gameStats[3]++;
+            }
             c = color(255, 255, 0);
             d[i].loc.y = 1000;
             justPressed = true;
@@ -139,7 +159,13 @@ class Catch
         {
           if (!justPressed)
 
-          {
+          {            
+            gameStats[1]++;
+            gameStats[2]++;
+            if (gameStats[2] > gameStats[3])
+            {
+              gameStats[3]++;
+            }
             d[i].loc.y = 1000;
             justPressed = true;
             c = color(255, 165, 0);
@@ -151,6 +177,7 @@ class Catch
         if (!justPressed)
         {
           c = color(255, 0, 0);
+          gameStats[2] = 0;
         }
       }
     }
