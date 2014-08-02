@@ -46,6 +46,7 @@ void game()
 {
   if (location == 3)
   {
+    multiplier();
     if (millis() >= startTime && songStart == false)
     {
       songs[whichSong].player.play();
@@ -68,7 +69,8 @@ void game()
     for (int i = 0; i < c.length; i++)
     {
       c[i].display();
-      c[i].ifPressed();
+      c[i].checkLong(songs[whichSong].d);
+     // c[i].ifPressed();
     }
     if (songs[whichSong].player.isPlaying() == false && songStart)
     {
@@ -77,5 +79,16 @@ void game()
       songStart = false;
       location = 4;
     }
+    textAlign(LEFT);
+    //println(gameStats[2]);
+    textSize(15);
+    text("Score: " + int(gameStats[4]), 600, 100);
+    text("Multiplier: x" + gameStats[5], 600, 150);
+    if (gameStats[2] > 10)
+    {
+      text("Streak :" + gameStats[2], 600, 200);
+    }
+    textAlign(CENTER);
   }
 }
+
