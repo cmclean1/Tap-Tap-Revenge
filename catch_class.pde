@@ -49,12 +49,62 @@ class Catch
   {
     for (int i = 0; i < d.length; i++)
     {
-      if (d[i].loc.y > 500 && d[i].loc.y < 600 && type == d[i].type && !d[i].longBeat)
+      if (d[i].loc.y > 500 && d[i].loc.y < 600 && type == d[i].type )
       {
         d[i].loc.y = 1000;
-        c = color(255, 0, 0);
-        gameStats[0]++;
-        gameStats[2] = 0;
+        if (!d[i].longBeat)
+        {
+          c = color(255, 0, 0);
+          gameStats[0]++;
+          gameStats[2] = 0;
+        }
+        return;
+      }
+    }
+  }
+  void checkLong(Drop[] d)
+  {
+    for (int i = 0; i < d.length; i++)
+    {
+      if (loc.y > d[i].loc.y - 5 && loc.y < d[i].loc.y + 5 && loc.x == d[i].loc.x && keys[type-1] && d[i].longBeat) {
+        c = color(0, 0, 244);
+        d[i].beatLength-=d[i].dropSpeed;            
+        d[i].loc.y-=d[i].dropSpeed;
+        gameStats[4] += 10 * gameStats[5];
+        if (d[i].beatLength <=0)
+        {
+          d[i].loc.y = 1000;
+        }
+        return;
+      } else if (loc.y > d[i].loc.y - 10 && loc.y < d[i].loc.y + 10 && loc.x == d[i].loc.x && keys[type-1] && d[i].longBeat) {
+        c = color(0, 255, 0);
+        d[i].beatLength-=d[i].dropSpeed;            
+        d[i].loc.y-=d[i].dropSpeed;
+        gameStats[4] += 8 * gameStats[5];
+        if (d[i].beatLength <=0)
+        {
+          d[i].loc.y = 1000;
+        }
+        return;
+      } else if (loc.y > d[i].loc.y - 15 && loc.y < d[i].loc.y + 15 && loc.x == d[i].loc.x && keys[type-1] && d[i].longBeat) {
+        c = color(255, 255, 0);
+        d[i].beatLength-=d[i].dropSpeed;            
+        d[i].loc.y-=d[i].dropSpeed;
+        gameStats[4] += 5 * gameStats[5];
+        if (d[i].beatLength <=0)
+        {
+          d[i].loc.y = 1000;
+        }
+        return;
+      } else if (loc.y > d[i].loc.y - 20 && loc.y < d[i].loc.y + 20 && loc.x == d[i].loc.x && keys[type-1] && d[i].longBeat) {
+        c = color(255, 165, 0);
+        d[i].beatLength-=d[i].dropSpeed;            
+        d[i].loc.y-=d[i].dropSpeed;
+        gameStats[4] += 3 * gameStats[5];
+        if (d[i].beatLength <=0)
+        {
+          d[i].loc.y = 1000;
+        }
         return;
       }
     }
@@ -64,22 +114,25 @@ class Catch
     for (int i = 0; i < d.length; i++)
     {
       if (loc.y > d[i].loc.y - 5 && loc.y < d[i].loc.y + 5 && loc.x == d[i].loc.x) {
-        if (d[i].longBeat)
+        //        if (d[i].longBeat)
+        //        {
+        //          c = color(0, 0, 244);
+        //          d[i].beatLength-=d[i].dropSpeed;            
+        //          d[i].loc.y-=d[i].dropSpeed;
+        //          gameStats[4] += 10 * gameStats[5];
+        //
+        //          if (d[i].beatLength <=0)
+        //          {
+        //            d[i].longBeat = false;
+        //          }
+        //        } else
         {
-          c = color(0, 0, 244);
-          d[i].beatLength-=d[i].dropSpeed;            
-          d[i].loc.y-=d[i].dropSpeed;
-          if (d[i].beatLength <=0)
-          {
-            d[i].longBeat = false;
-          }
-        } else
-        {
-          if (!justPressed)
+          if (!justPressed && !d[i].longBeat)
           {
             d[i].loc.y = 1000;
             gameStats[1]++;
             gameStats[2]++;
+            gameStats[4] += 50 * gameStats[5];
             if (gameStats[2] > gameStats[3])
             {
               gameStats[3]++;
@@ -89,23 +142,27 @@ class Catch
           }
         }
         return;
-      } else if (loc.y > d[i].loc.y - 10 && loc.y < d[i].loc.y + 10 && loc.x == d[i].loc.x) {      
-        if (d[i].longBeat)
+      } else if (loc.y > d[i].loc.y - 10 && loc.y < d[i].loc.y + 10 && loc.x == d[i].loc.x) {   
+        //        if (d[i].longBeat)
+        //        {
+        //          c = color(0, 255, 0);
+        //          d[i].beatLength-=d[i].dropSpeed;
+        //          d[i].loc.y-=d[i].dropSpeed;
+        //          gameStats[4] += 8 * gameStats[5];
+        //
+        //          if (d[i].beatLength <=0)
+        //          {
+        //            d[i].longBeat = false;
+        //          }
+        //        } else
         {
-          c = color(0, 255, 0);
-          d[i].beatLength-=d[i].dropSpeed;
-          d[i].loc.y-=d[i].dropSpeed;
-          if (d[i].beatLength <=0)
-          {
-            d[i].longBeat = false;
-          }
-        } else
-        {
-          if (!justPressed)
+          if (!justPressed && !d[i].longBeat)
 
           {            
             gameStats[1]++;
             gameStats[2]++;
+            gameStats[4] += 40 * gameStats[5];
+
             if (gameStats[2] > gameStats[3])
             {
               gameStats[3]++;
@@ -118,22 +175,25 @@ class Catch
         return;
       } else if (loc.y > d[i].loc.y - 15 && loc.y < d[i].loc.y + 15 && loc.x == d[i].loc.x)
       {
-        if (d[i].longBeat)
+        //        if (d[i].longBeat)
+        //        {
+        //          c = color(255, 255, 0);
+        //          d[i].beatLength-=d[i].dropSpeed;            
+        //          d[i].loc.y-=d[i].dropSpeed;
+        //          gameStats[4] += 5 * gameStats[5];
+        //
+        //          if (d[i].beatLength <=0)
+        //          {
+        //            d[i].longBeat = false;
+        //          }
+        //        } else
         {
-          c = color(255, 255, 0);
-          d[i].beatLength-=d[i].dropSpeed;            
-          d[i].loc.y-=d[i].dropSpeed;
-          if (d[i].beatLength <=0)
-          {
-            d[i].longBeat = false;
-          }
-        } else
-        {
-          if (!justPressed)
+          if (!justPressed && !d[i].longBeat)
 
           {            
             gameStats[1]++;
             gameStats[2]++;
+            gameStats[4] += 30 * gameStats[5];
             if (gameStats[2] > gameStats[3])
             {
               gameStats[3]++;
@@ -145,23 +205,27 @@ class Catch
         }
         return;
       } else if (loc.y > d[i].loc.y - 20 && loc.y < d[i].loc.y + 20 && loc.x == d[i].loc.x)
-      {       
-        if (d[i].longBeat)
+      {               
+
+        //        if (d[i].longBeat)
+        //        {
+        //          c = color(255, 165, 0);
+        //          d[i].beatLength-=d[i].dropSpeed;            
+        //          d[i].loc.y-=d[i].dropSpeed;
+        //          gameStats[4] += 3 * gameStats[5];
+        //
+        //          if (d[i].beatLength <=0)
+        //          {
+        //            d[i].longBeat = false;
+        //          }
+        //        } else
         {
-          c = color(255, 165, 0);
-          d[i].beatLength-=d[i].dropSpeed;            
-          d[i].loc.y-=d[i].dropSpeed;
-          if (d[i].beatLength <=0)
-          {
-            d[i].longBeat = false;
-          }
-        } else
-        {
-          if (!justPressed)
+          if (!justPressed && !d[i].longBeat)
 
           {            
             gameStats[1]++;
             gameStats[2]++;
+            gameStats[4] += 15 * gameStats[5];
             if (gameStats[2] > gameStats[3])
             {
               gameStats[3]++;

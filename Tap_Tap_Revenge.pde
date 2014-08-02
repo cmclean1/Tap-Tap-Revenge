@@ -24,12 +24,15 @@ float BPS;
 int whichSong = 0;
 boolean[] keys = new boolean[4];
 boolean songStart = false;
-float[] gameStats = new float[4];
+int[] gameStats = new int[6];
+
 /*
 0 = missed drops
  1 = caught drops
  2 = current streak
  3 = top streak
+ 4 = points
+ 5 = multiplier
  */
 int location = 0;
 /*
@@ -92,6 +95,7 @@ void draw()
     text("Press SPACE to return to song selection", width/2, 450);
     textSize(15);
     textAlign(LEFT);
+    text("Score: " + int(gameStats[4]), 50, 50);
     text("Drops Caught: " + int(gameStats[1]), 50, 100);
     text("Drops Missed: " + int(gameStats[0]), 50, 150);
     text("Accuracy: " + round(gameStats[1]/(gameStats[0]+gameStats[1])*100) + "%", 50, 200);
@@ -153,13 +157,36 @@ void keyPressed()
     {
       keys[3] = true;
     }
+    for (int i = 0; i < c.length; i++)
+    {
+      c[i].ifPressed();
+    }
   } else if (location == 4)
   {
     if (key == ' ')
     {
       location = 2;
-      gameStats = new float[4];
+      gameStats = new int[6];
     }
+  }
+}
+void multiplier()
+{
+  if (gameStats[2] < 10)
+  {
+    gameStats[5] = 1;
+  }
+  if (gameStats[2] >= 10)
+  {
+    gameStats[5] = 2;
+  }
+  if (gameStats[2] >= 20)
+  {
+    gameStats[5] = 3;
+  }
+  if (gameStats[2] >= 30)
+  {
+    gameStats[5] = 4;
   }
 }
 void keyReleased()
