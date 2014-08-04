@@ -47,6 +47,7 @@ void game()
   if (location == 3)
   {
     multiplier();
+    println(songs[whichSong].drops.get(1).dropSpeed);
     if (millis() >= startTime && songStart == false)
     {
       songs[whichSong].player.play();
@@ -61,15 +62,17 @@ void game()
       songs[whichSong].beatTime+=songs[whichSong].SPB;
     }
     fill(0);
-    for (int i = 0; i < songs[whichSong].d.length; i++)
+    for (int i = songs[whichSong].drops.size()-1; i >= 0; i--)
     {
-      songs[whichSong].d[i].display();
-      songs[whichSong].d[i].move();
+      Drop d = songs[whichSong].drops.get(i);
+      d.display();
+      d.move();
     }
     for (int i = 0; i < c.length; i++)
     {
       c[i].display();
-      c[i].checkLong(songs[whichSong].d);
+      c[i].checkLong(songs[whichSong].drops);
+      c[i].checkMissedList(songs[whichSong].drops);
      // c[i].ifPressed();
     }
     if (songs[whichSong].player.isPlaying() == false && songStart)
@@ -80,7 +83,6 @@ void game()
       location = 4;
     }
     textAlign(LEFT);
-    //println(gameStats[2]);
     textSize(15);
     text("Score: " + int(gameStats[4]), 600, 100);
     text("Multiplier: x" + gameStats[5], 600, 150);
