@@ -11,6 +11,7 @@ class Song
   int which;
   String[][] data;
   Drop[] d;
+  ArrayList<Drop> drops;
   AudioPlayer player;
   AudioMetaData meta;
   Song(String _player, int _whichSong)
@@ -42,8 +43,7 @@ class Song
       imageMode(CENTER);
       image(coverArt, width/2, 200, 300, 300);
       player.play();
-    }
-    else
+    } else
     {
       player.rewind();
       player.pause();
@@ -51,18 +51,27 @@ class Song
   }
   void initializeDrops()
   {
-    d = new Drop[loadString.length-1];
-    for (int i = 0; i < d.length; i++)
-    {
-      d[i] = new Drop(int(data[i+1][0]), float(data[i+1][1]), float(data[i+1][2]));
+    // d = new Drop[loadString.length-1];
+    drops = new ArrayList<Drop>();
+    for (int i = 0; i < loadString.length-1; i++) {
+      drops.add(new Drop(int(data[i+1][0]), float(data[i+1][1]), float(data[i+1][2])));
     }
+    //    for (int i = 0; i < d.length; i++)
+    //    {
+    //      d[i] = new Drop(int(data[i+1][0]), float(data[i+1][1]), float(data[i+1][2]));
+    //    }
     songTime = startTime+(start*1000);
     beatTime = songTime;
-    for (int i = 0; i < d.length; i++)
-    {
-      d[i].beatTime = songTime+((d[i].dropTime-1)*SPB)-d[i].travelTime;
+//    for (int i = 0; i < d.length; i++)
+//    {
+//      d[i].beatTime = songTime+((d[i].dropTime-1)*SPB)-d[i].travelTime;
+//    }
+    for (int i = 0; i < loadString.length-1; i++) {
+      Drop d = drops.get(i);
+      d.beatTime = songTime+((d.dropTime-1)*SPB)-d.travelTime;
     }
   }
+
   void playSong()
   {
     for (int i = 0; i < d.length; i++)

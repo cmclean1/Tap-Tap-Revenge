@@ -3,10 +3,12 @@ class Drop
   int type;
   PVector loc;
   boolean longBeat = false;
+  boolean longPressed = false;
   float dropTime;
   float beatTime;
   float dropLength;
   float beatLength;
+  float vel = 5;
   float dropSpeed = 5;
   boolean go = false;
   float travelTime;
