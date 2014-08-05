@@ -4,7 +4,10 @@ import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.ugens.*;
 import ddf.minim.effects.*;
-
+File f = new File(dataPath("file.xml"));
+//if (!f.exists()) {
+//  println("File does not exist");
+//} 
 Catch[] c = new Catch[4];
 Song[] songs;
 Minim minim;
@@ -24,6 +27,7 @@ float BPS;
 int whichSong = 0;
 boolean[] keys = new boolean[4];
 boolean songStart = false;
+boolean diffChoose = false;
 int[] gameStats = new int[6];
 
 /*
@@ -52,12 +56,7 @@ void setup()
   gunPlayer =  minim.loadFile("gun.wmv");
   folder = new java.io.File(dataPath(""));
   filenames = folder.list(jpgFilter);
-  s = loadStrings("Welcome To Me.txt");
-  ss = new String[s.length][3];
-  for (int i = 0; i < s.length; i++)
-  {
-    ss[i] = split(s[i], ", ");
-  }
+
   songs = new Song[filenames.length];
   for (int i = 0; i < songs.length; i++)
   {
@@ -113,30 +112,47 @@ void keyPressed()
     }
   } else if (location == 2)
   {
+    songs[whichSong].arrow();
+    if (keyCode == BACKSPACE)
+    {
+      diffChoose = false;
+    }
     if (key == ' ')
     {
-      location = 3;
-      for (int i = 0; i < c.length; i++)
+      if (!diffChoose)
       {
-        c[i] = new Catch(i+1);
+        diffChoose = true;
+      } else if (diffChoose)
+      {
+        location = 3;
+        for (int i = 0; i < c.length; i++)
+        {
+          c[i] = new Catch(i+1);
+        }
+        startTime = millis() + 3000;
+        songs[whichSong].initializeDrops();
+        songs[whichSong].player.rewind();
+        songs[whichSong].player.pause();
       }
-      startTime = millis() + 3000;
-      songs[whichSong].initializeDrops();
-      songs[whichSong].player.rewind();
-      songs[whichSong].player.pause();
     } else if (keyCode == RIGHT)
     {
-      whichSong++;
-      if (whichSong > songs.length-1)
+      if (!diffChoose)
       {
-        whichSong = 0;
+        whichSong++;
+        if (whichSong > songs.length-1)
+        {
+          whichSong = 0;
+        }
       }
     } else if (keyCode == LEFT)
     {
-      whichSong--;
-      if (whichSong < 0)
+      if (!diffChoose)
       {
-        whichSong = songs.length-1;
+        whichSong--;
+        if (whichSong < 0)
+        {
+          whichSong = songs.length-1;
+        }
       }
     }
   } else if (location == 3)
