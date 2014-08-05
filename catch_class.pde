@@ -85,6 +85,10 @@ class Catch
             gameStats[0]++;
             gameStats[2] = 0;
           }
+          if (d.longPressed)
+          {
+            drops.remove(i);
+          }
         }
         return;
       }
@@ -97,6 +101,14 @@ class Catch
       Drop d = drops.get(i);
       if (loc.y > d.loc.y - 5 && loc.y < d.loc.y + 5 && loc.x == d.loc.x && keys[type-1] && d.longBeat) {
         c = color(0, 0, 244);
+        if (!d.longPressed)
+        {
+          gameStats[2]++;
+          if (gameStats[2] > gameStats[3])
+          {
+            gameStats[3]++;
+          }
+        }
         d.longPressed = true;
         d.beatLength-=d.vel;      
         d.loc.y-=d.dropSpeed;  
@@ -107,6 +119,14 @@ class Catch
         }
         return;
       } else if (loc.y > d.loc.y - 10 && loc.y < d.loc.y + 10 && loc.x == d.loc.x && keys[type-1] && d.longBeat) {
+        if (!d.longPressed)
+        {
+          gameStats[2]++;
+          if (gameStats[2] > gameStats[3])
+          {
+            gameStats[3]++;
+          }
+        }
         d.longPressed = true;
         c = color(0, 255, 0);
         d.beatLength-=d.vel;      
@@ -118,6 +138,14 @@ class Catch
         }
         return;
       } else if (loc.y > d.loc.y - 15 && loc.y < d.loc.y + 15 && loc.x == d.loc.x && keys[type-1] && d.longBeat) {
+        if (!d.longPressed)
+        {
+          gameStats[2]++;
+          if (gameStats[2] > gameStats[3])
+          {
+            gameStats[3]++;
+          }
+        }
         d.longPressed = true;
         c = color(255, 255, 0);
         d.beatLength-=d.vel;      
@@ -129,6 +157,14 @@ class Catch
         }
         return;
       } else if (loc.y > d.loc.y - 20 && loc.y < d.loc.y + 20 && loc.x == d.loc.x && keys[type-1] && d.longBeat) {
+        if (!d.longPressed)
+        {
+          gameStats[2]++;
+          if (gameStats[2] > gameStats[3])
+          {
+            gameStats[3]++;
+          }
+        }
         d.longPressed = true;
         c = color(255, 165, 0);
         d.beatLength-=d.vel;      
@@ -148,8 +184,21 @@ class Catch
     {
       Drop d = drops.get(i);
       if (loc.y > d.loc.y - 5 && loc.y < d.loc.y + 5 && loc.x == d.loc.x) {
-
-
+        if (!justPressed && !d.longBeat)
+        {
+          drops.remove(i);
+          gameStats[1]++;
+          gameStats[4] += 50 * gameStats[5];
+          gameStats[2]++;
+          if (gameStats[2] > gameStats[3])
+          {
+            gameStats[3]++;
+          }
+          justPressed = true;
+          c = color(0, 0, 255);
+        }
+        return;
+      } else if (loc.y > d.loc.y - 10 && loc.y < d.loc.y + 10 && loc.x == d.loc.x) {   
         if (!justPressed && !d.longBeat)
         {
           drops.remove(i);
@@ -161,78 +210,71 @@ class Catch
             gameStats[3]++;
           }
           justPressed = true;
-          c = color(0, 0, 255);
-        }
-
-        return;
-      } else if (loc.y > d.loc.y - 10 && loc.y < d.loc.y + 10 && loc.x == d.loc.x) {   
-
-
-        if (!justPressed && !d.longBeat)
-
-        {            
-          gameStats[1]++;
-          gameStats[2]++;
-          gameStats[4] += 40 * gameStats[5];
-
-          if (gameStats[2] > gameStats[3])
-          {
-            gameStats[3]++;
-          }
           c = color(0, 255, 0);
-          drops.remove(i);
-          justPressed = true;
         }
-
         return;
       } else if (loc.y > d.loc.y - 15 && loc.y < d.loc.y + 15 && loc.x == d.loc.x)
       {
-
-
         if (!justPressed && !d.longBeat)
-
-        {            
+        {
+          drops.remove(i);
           gameStats[1]++;
           gameStats[2]++;
-          gameStats[4] += 30 * gameStats[5];
+          gameStats[4] += 50 * gameStats[5];
           if (gameStats[2] > gameStats[3])
           {
             gameStats[3]++;
           }
-          c = color(255, 255, 0);
-          drops.remove(i);
           justPressed = true;
+          c = color(255, 255, 0);
         }
-
         return;
       } else if (loc.y > d.loc.y - 20 && loc.y < d.loc.y + 20 && loc.x == d.loc.x)
       {               
-
-
-
         if (!justPressed && !d.longBeat)
-
-        {            
+        {
+          drops.remove(i);
           gameStats[1]++;
           gameStats[2]++;
-          gameStats[4] += 15 * gameStats[5];
+          gameStats[4] += 50 * gameStats[5];
           if (gameStats[2] > gameStats[3])
           {
             gameStats[3]++;
           }
-          drops.remove(i);
           justPressed = true;
           c = color(255, 165, 0);
         }
-
         return;
       } else
       {
+        justMissed(drops);
         if (!justPressed)
         {
-          c = color(255, 0, 0);
-          gameStats[2] = 0;
+          //          c = color(255, 0, 0);
+          //          gameStats[2] = 0;
         }
+      }
+    }
+  }
+  void justMissed(ArrayList<Drop> drops)
+  {
+    for (int i = 0; i <= drops.size ()-1; i++)
+    {
+      Drop d = drops.get(i);
+      if (loc.x != d.loc.x)
+      {
+        continue;
+      } else if (millis() <= d.beatTime)
+      {
+        continue;
+      } else if (loc.y > d.loc.y - 20 && loc.y < d.loc.y + 20 && loc.x == d.loc.x) {
+        return;
+      } else
+      {
+        c = color(255, 0, 0);
+        gameStats[2] = 0;
+        print("LOL");
+        // return;
       }
     }
   }

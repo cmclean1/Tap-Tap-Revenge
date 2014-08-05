@@ -47,7 +47,6 @@ void game()
   if (location == 3)
   {
     multiplier();
-    println(songs[whichSong].drops.get(1).dropSpeed);
     if (millis() >= startTime && songStart == false)
     {
       songs[whichSong].player.play();
