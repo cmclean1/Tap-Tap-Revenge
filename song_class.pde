@@ -32,15 +32,7 @@ class Song
     which = _whichSong;
     player = minim.loadFile(name);
     meta = player.getMetaData();
-    //    loadString = loadStrings(meta.title() + ".txt");
-    //    data = new String[loadString.length][3];
-    //    for (int i = 0; i < data.length; i++)
-    //    {
-    //      data[i] = split(loadString[i], ", ");
-    //    }
-    //    start = float(data[0][0]);
-    //    BPM = float(ss[0][1]);
-    //    SPB = (60/BPM)*1000;
+
     art = new File(dataPath(meta.title() + ".jpg"));
     if (art.exists())
     {
@@ -53,25 +45,25 @@ class Song
   }
   void checkDifficulty()
   {
-    File f = new File(dataPath(meta.title() + "E.txt"));
+    File f = new File(dataPath(meta.title() + "Easy.txt"));
     if (f.exists())
     {
       diff[0] = true;
       diffArrow = 0;
     }
-    f = new File(dataPath(meta.title() + "M.txt"));
+    f = new File(dataPath(meta.title() + "Medium.txt"));
     if (f.exists())
     {
       diff[1] = true;
       diffArrow = 1;
     }
-    f = new File(dataPath(meta.title() + "H.txt"));
+    f = new File(dataPath(meta.title() + "Hard.txt"));
     if (f.exists())
     {
       diff[2] = true;
       diffArrow = 2;
     }
-    f = new File(dataPath(meta.title() + "I.txt"));
+    f = new File(dataPath(meta.title() + "Insane.txt"));
     if (f.exists())
     {
       diff[3] = true;
@@ -127,18 +119,36 @@ class Song
       if (keyCode == UP)
       {
         diffArrow--;
+        if (diffArrow < 0)
+        {
+          diffArrow = 3;
+        }
       }
     }
     if (keyCode == DOWN)
     {
       diffArrow++;
+      if (diffArrow > 3)
+      {
+        diffArrow = 0;
+      }
     }
   }
 
 
-  void initializeDrops()
+  void initializeSong()
   {
+
     // d = new Drop[loadString.length-1];
+    loadString = loadStrings(meta.title() + diffString[diffArrow] + ".txt");
+    data = new String[loadString.length][3];
+    for (int i = 0; i < data.length; i++)
+    {
+      data[i] = split(loadString[i], ", ");
+    }
+    start = float(data[0][0]);
+    BPM = float(data[0][1]);
+    SPB = (60/BPM)*1000;
     drops = new ArrayList<Drop>();
     for (int i = 0; i < loadString.length-1; i++) {
       drops.add(new Drop(int(data[i+1][0]), float(data[i+1][1]), float(data[i+1][2])));

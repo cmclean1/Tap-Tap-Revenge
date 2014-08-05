@@ -28,7 +28,7 @@ int whichSong = 0;
 boolean[] keys = new boolean[4];
 boolean songStart = false;
 boolean diffChoose = false;
-int[] gameStats = new int[6];
+float[] gameStats = new float[6];
 
 /*
 0 = missed drops
@@ -97,7 +97,7 @@ void draw()
     text("Score: " + int(gameStats[4]), 50, 50);
     text("Drops Caught: " + int(gameStats[1]), 50, 100);
     text("Drops Missed: " + int(gameStats[0]), 50, 150);
-    text("Accuracy: " + round(gameStats[1]/(gameStats[0]+gameStats[1])*100) + "%", 50, 200);
+    text("Accuracy: " + int((gameStats[1]/(gameStats[0]+gameStats[1])*100)) + "%", 50, 200);
     text("Longext Streak: " + int(gameStats[3]), 50, 250);
     textAlign(CENTER);
   }
@@ -124,15 +124,19 @@ void keyPressed()
         diffChoose = true;
       } else if (diffChoose)
       {
-        location = 3;
-        for (int i = 0; i < c.length; i++)
+        f = new File(dataPath(songs[whichSong].meta.title() + songs[whichSong].diffString[songs[whichSong].diffArrow] + ".txt"));
+        if (f.exists())
         {
-          c[i] = new Catch(i+1);
+          location = 3;
+          for (int i = 0; i < c.length; i++)
+          {
+            c[i] = new Catch(i+1);
+          }
+          startTime = millis() + 3000;
+          songs[whichSong].initializeSong();
+          songs[whichSong].player.rewind();
+          songs[whichSong].player.pause();
         }
-        startTime = millis() + 3000;
-        songs[whichSong].initializeDrops();
-        songs[whichSong].player.rewind();
-        songs[whichSong].player.pause();
       }
     } else if (keyCode == RIGHT)
     {
@@ -182,7 +186,7 @@ void keyPressed()
     if (key == ' ')
     {
       location = 2;
-      gameStats = new int[6];
+      gameStats = new float[6];
     }
   }
 }
