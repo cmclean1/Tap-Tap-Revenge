@@ -34,12 +34,20 @@ void songSelect()
       songs[i].displayMenu();
     }
     textSize(20);
-    text("CHOOSE A SONG", width/2, 35);
-    textSize(15);
-    text("SELECT WITH SPACE", width/2, 485);
-    textSize(50);
-    text("←", 50, 400);
-    text("→", 750, 400);
+    if (!diffChoose)
+    {
+      text("CHOOSE A SONG", width/2, 35);
+      textSize(15);
+      text("SELECT WITH SPACE", width/2, 485);
+      textSize(50);
+      text("←", 50, 400);
+      text("→", 750, 400);
+    } else
+    {
+      text("CHOOSE DIFFICULTY WITH SPACE", width/2, 35);
+      textSize(15);
+      text("GO BACK WITH BACKSPACE", width/2, 485);
+    }
   }
 }
 void game()
@@ -61,7 +69,7 @@ void game()
       songs[whichSong].beatTime+=songs[whichSong].SPB;
     }
     fill(0);
-    for (int i = songs[whichSong].drops.size()-1; i >= 0; i--)
+    for (int i = songs[whichSong].drops.size ()-1; i >= 0; i--)
     {
       Drop d = songs[whichSong].drops.get(i);
       d.display();
@@ -72,12 +80,13 @@ void game()
       c[i].display();
       c[i].checkLong(songs[whichSong].drops);
       c[i].checkMissedList(songs[whichSong].drops);
-     // c[i].ifPressed();
+      // c[i].ifPressed();
     }
     if (songs[whichSong].player.isPlaying() == false && songStart)
     {
       songs[whichSong].player.rewind();
       songs[whichSong].player.pause();
+      diffChoose = false;
       songStart = false;
       location = 4;
     }
